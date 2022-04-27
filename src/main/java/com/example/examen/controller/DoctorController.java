@@ -8,6 +8,7 @@ import com.example.examen.model.Patient;
 import com.example.examen.service.DoctorService;
 import com.example.examen.service.PatientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +21,11 @@ public class DoctorController {
     private final PatientService patientService;
 
     @GetMapping
-    public List<Doctor> getAll() {
-        return doctorService.getAll();
-    }
-
-    @GetMapping
-    public List<Doctor> getAllBySpecialty(@RequestParam String specialty) throws EmptySpecialtyFilterException {
-        return doctorService.getAllBySpecialty(specialty);
+    public List<Doctor> getAll(@Nullable @RequestParam String specialty) throws EmptySpecialtyFilterException {
+        if(specialty == null)
+            return doctorService.getAll();
+        else
+            return doctorService.getAllBySpecialty(specialty);
     }
 
     @PostMapping
